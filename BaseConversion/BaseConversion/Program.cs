@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BaseConversion
@@ -41,6 +42,24 @@ namespace BaseConversion
                 power = power * startingBase;
             }
             Console.WriteLine($"Numarul in baza 10: {base10}");
+            string HEX = "0123456789ABCDEF";
+            Stack<string> myStack = new Stack<string>();
+            int rest;
+            while (base10 != 0)
+            {
+                rest = base10 % endingBase;
+                myStack.Push(HEX[rest].ToString());
+                base10 = base10 / endingBase;
+            }
+            int index;
+            Console.Write("Numarul in baza finala: ");
+            while (myStack.Count > 0)
+            {
+
+                Console.Write(myStack.Peek());
+                myStack.Pop();
+            }
         }
+
     }
 }
