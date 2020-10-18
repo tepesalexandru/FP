@@ -12,6 +12,15 @@ namespace BaseConversion
             Console.Write("Incepe introducand numarul tau: ");
             string input = Console.ReadLine();
 
+            // Verificam daca numarul este cu virgula
+            int virgula = input.IndexOf('.');
+
+            string afterPoint, beforePoint;
+            beforePoint = input.Substring(0, virgula);
+            afterPoint = input.Substring(virgula + 1);
+
+            input = beforePoint;
+
             Console.Write("In ce baza este numarul tau? ");
             int startingBase = Int32.Parse(Console.ReadLine());
 
@@ -41,7 +50,6 @@ namespace BaseConversion
                 base10 = base10 + cifra;
                 power = power * startingBase;
             }
-            Console.WriteLine($"Numarul in baza 10: {base10}");
             string HEX = "0123456789ABCDEF";
             Stack<string> myStack = new Stack<string>();
             int rest;
