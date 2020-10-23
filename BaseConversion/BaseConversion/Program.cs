@@ -67,6 +67,7 @@ namespace BaseConversion
                 Console.Write(myStack.Peek());
                 myStack.Pop();
             }
+
         }
 
     }
