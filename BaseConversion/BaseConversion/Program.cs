@@ -12,14 +12,7 @@ namespace BaseConversion
             Console.Write("Incepe introducand numarul tau: ");
             string input = Console.ReadLine();
 
-            // Verificam daca numarul este cu virgula
-            int virgula = input.IndexOf('.');
-
-            string afterPoint, beforePoint;
-            beforePoint = input.Substring(0, virgula);
-            afterPoint = input.Substring(virgula + 1);
-
-            input = beforePoint;
+            string[] numbers = input.Split(".");
 
             Console.Write("In ce baza este numarul tau? ");
             int startingBase = Int32.Parse(Console.ReadLine());
@@ -27,39 +20,81 @@ namespace BaseConversion
             Console.Write("In ce baza doresti sa convertesti numarul dat? ");
             int endingBase = Int32.Parse(Console.ReadLine());
 
-            // Convertim numarul initial in baza 10
-            int base10 = 0, power = 1, cifra = 0;
-            int i, j;
+            int base10 = ToBase10(numbers[0], startingBase);
 
-            // Luam valorile ASCII din input
-            byte[] asciiBytes = Encoding.ASCII.GetBytes(input);
+            PrintIntegerConversion(base10, endingBase);
+        
+            float decimalBase10 = FractionToBase10(numbers[1], startingBase);
+
+            PrintDecimalConversion(decimalBase10, endingBase);
+            
+        }
+
+        static int ToBase10(string s, int b)
+        {
+            int i, power = 1, cifra = 0, base10 = 0;
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(s);
             for (i = asciiBytes.Length - 1; i >= 0; i--)
             {
                 if (asciiBytes[i] >= 48 && asciiBytes[i] <= 57)
                 {
                     // este numar
                     cifra = (asciiBytes[i] - 48) * power;
-                } else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
+                }
+                else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
                 {
                     cifra = (asciiBytes[i] - 55) * power;
                     // este litera mare
-                } else
+                }
+                else
                 {
                     // handle exception
                 }
                 base10 = base10 + cifra;
-                power = power * startingBase;
+                power = power * b ;
             }
+            return base10;
+           
+        }
+
+        static float FractionToBase10(string s, int b)
+        {
+            int i, power = b;
+            float cifra = 0, base10 = 0;
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(s);
+            for (i = 0; i < s.Length; i++)
+            {
+                if (asciiBytes[i] >= 48 && asciiBytes[i] <= 57)
+                {
+                    // este numar
+                    cifra = (asciiBytes[i] - 48) * (1f / power);
+                }
+                else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
+                {
+                    cifra = (asciiBytes[i] - 55) * (1f / power);
+                    // este litera mare
+                }
+                else
+                {
+                    // handle exception
+                }
+                base10 = base10 + cifra;
+                power = power * b;
+            }
+            return base10;
+        }
+
+        static void PrintIntegerConversion(int n, int b)
+        {
             string HEX = "0123456789ABCDEF";
             Stack<string> myStack = new Stack<string>();
             int rest;
-            while (base10 != 0)
+            while (n != 0)
             {
-                rest = base10 % endingBase;
+                rest = n % b;
                 myStack.Push(HEX[rest].ToString());
-                base10 = base10 / endingBase;
+                n = n / b;
             }
-            int index;
             Console.Write("Numarul in baza finala: ");
             while (myStack.Count > 0)
             {
@@ -67,7 +102,28 @@ namespace BaseConversion
                 Console.Write(myStack.Peek());
                 myStack.Pop();
             }
+        }
 
+        static float FractionalPart(float n)
+        {
+            return n - (int)n;
+        }
+
+        static int IntegerPart(float n)
+        {
+            return (int)n;
+        }
+
+        static void PrintDecimalConversion(float n, int b)
+        {
+            if (FractionalPart(n) > 0) Console.Write(".");
+            string HEX = "0123456789ABCDEF";
+            while (FractionalPart(n) != 0)
+            {
+                n = n * b;
+                Console.Write(HEX[IntegerPart(n)]);
+                n = n - IntegerPart(n);
+            }
         }
 
     }
