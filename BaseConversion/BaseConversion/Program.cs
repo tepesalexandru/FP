@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace BaseConversion
@@ -24,7 +25,7 @@ namespace BaseConversion
 
             PrintIntegerConversion(base10, endingBase);
         
-            float decimalBase10 = FractionToBase10(numbers[1], startingBase);
+            decimal decimalBase10 = FractionToBase10(numbers[1], startingBase);
 
             PrintDecimalConversion(decimalBase10, endingBase);
             
@@ -57,21 +58,22 @@ namespace BaseConversion
            
         }
 
-        static float FractionToBase10(string s, int b)
+        static decimal FractionToBase10(string s, int b)
         {
             int i, power = b;
-            float cifra = 0, base10 = 0;
+            decimal cifra = 0, base10 = 0;
             byte[] asciiBytes = Encoding.ASCII.GetBytes(s);
+            
             for (i = 0; i < s.Length; i++)
             {
                 if (asciiBytes[i] >= 48 && asciiBytes[i] <= 57)
                 {
                     // este numar
-                    cifra = (asciiBytes[i] - 48) * (1f / power);
+                    cifra = (asciiBytes[i] - 48) * ((decimal)1 / power);
                 }
                 else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
                 {
-                    cifra = (asciiBytes[i] - 55) * (1f / power);
+                    cifra = (asciiBytes[i] - 55) * ((decimal)1 / power);
                     // este litera mare
                 }
                 else
@@ -89,6 +91,10 @@ namespace BaseConversion
             string HEX = "0123456789ABCDEF";
             Stack<string> myStack = new Stack<string>();
             int rest;
+            if (n == 0)
+            {
+                Console.Write("0");
+            }
             while (n != 0)
             {
                 rest = n % b;
@@ -104,26 +110,50 @@ namespace BaseConversion
             }
         }
 
-        static float FractionalPart(float n)
+        static decimal FractionalPart(decimal n)
         {
             return n - (int)n;
         }
 
-        static int IntegerPart(float n)
+        static int IntegerPart(decimal n)
         {
             return (int)n;
         }
 
-        static void PrintDecimalConversion(float n, int b)
+        static void PrintDecimalConversion(decimal n, int b)
         {
+            Dictionary<decimal, int> repeatingDecimals = new Dictionary<decimal, int>();
+            List<char> decimals = new List<char>();
+            bool infinite = false;
+            repeatingDecimals[n] = 1;
             if (FractionalPart(n) > 0) Console.Write(".");
             string HEX = "0123456789ABCDEF";
             while (FractionalPart(n) != 0)
             {
                 n = n * b;
-                Console.Write(HEX[IntegerPart(n)]);
+                decimals.Add(HEX[IntegerPart(n)]);
                 n = n - IntegerPart(n);
+                try
+                {
+                    repeatingDecimals[n]++;
+                } catch(KeyNotFoundException)
+                {
+                    repeatingDecimals[n] = 1;
+                }
+                if (repeatingDecimals[n] > 1)
+                {
+                    infinite = true;
+                    break;
+                }
             }
+
+            int i = 0;
+            if (infinite) Console.Write("(");
+            for (i = 0; i < decimals.Count; i++)
+            {
+                Console.Write(decimals[i]);
+            }
+            if (infinite) Console.Write(")");
         }
 
     }
