@@ -102,17 +102,11 @@ namespace BaseConversion
             {
                 if (asciiBytes[i] >= (byte)'0' && asciiBytes[i] <= (byte)'9')
                 {
-                    // este numar
                     cifra = (asciiBytes[i] - '0') * power;
                 }
                 else if (asciiBytes[i] >= (byte)'A' && asciiBytes[i] <= (byte)'F')
                 {
                     cifra = (asciiBytes[i] - 'A' + 10) * power;
-                    // este litera mare
-                }
-                else
-                {
-                    // handle exception
                 }
                 base10 = base10 + cifra;
                 power = power * b ;
@@ -131,17 +125,11 @@ namespace BaseConversion
             {
                 if (asciiBytes[i] >= 48 && asciiBytes[i] <= 57)
                 {
-                    // este numar
                     cifra = (asciiBytes[i] - 48) * ((decimal)1 / power);
                 }
                 else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
                 {
                     cifra = (asciiBytes[i] - 55) * ((decimal)1 / power);
-                    // este litera mare
-                }
-                else
-                {
-                    // handle exception
                 }
                 base10 = base10 + cifra;
                 power = power * b;
