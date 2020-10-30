@@ -123,13 +123,13 @@ namespace BaseConversion
             
             for (i = 0; i < s.Length; i++)
             {
-                if (asciiBytes[i] >= 48 && asciiBytes[i] <= 57)
+                if (asciiBytes[i] >= (byte)'0' && asciiBytes[i] <= (byte)'9')
                 {
-                    cifra = (asciiBytes[i] - 48) * ((decimal)1 / power);
+                    cifra = (asciiBytes[i] - '0') * ((decimal)1 / power);
                 }
-                else if (asciiBytes[i] >= 65 && asciiBytes[i] <= 70)
+                else if (asciiBytes[i] >= (byte)'A' && asciiBytes[i] <= (byte)'F')
                 {
-                    cifra = (asciiBytes[i] - 55) * ((decimal)1 / power);
+                    cifra = (asciiBytes[i] - 'A' + 10) * ((decimal)1 / power);
                 }
                 base10 = base10 + cifra;
                 power = power * b;
