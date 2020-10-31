@@ -17,23 +17,32 @@ namespace LinieMinima
             InitializeComponent();
         }
 
+        // variabile pentru desenarea pe ecran
         Bitmap bmp;
         Graphics grp;
+
+        // variabila pentru a genera numere aleatorii
         static Random rnd = new Random();
+        
+        // clasa pentru un punct
         public class point
         {
             public float x, y;
+
+            // initializam punctul cu coordonate aleatorii
             public point()
             {
                 x = rnd.Next(1000);
                 y = rnd.Next(600);
             }
+            // functie pentru a-l desena pe ecran
             public void Draw(Graphics grp)
             {
                 grp.DrawEllipse(new Pen(Color.Green, 2), x, y, 2, 2);
             }
         }
 
+        // functie pentru a calcula distanta dintre doua puncte A si B
         static float lungime(point A, point B)
         {
             return (float)Math.Sqrt((A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y));
